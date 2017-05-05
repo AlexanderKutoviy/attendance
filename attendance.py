@@ -157,13 +157,13 @@ def main():
     GPIO.cleanup()
     try:
         initGpio()
-        display.init()
+        # display.init()
         while True:
-            display.lcdWriteSecondLine("Choose an action...")
+            # display.lcdWriteSecondLine("Choose an action...")
             global displayTime
             displayTime=true
             #Start new thread to show curent datetime on display
-            # and wait for user input on keyboard
+            and wait for user input on keyboard
             thr = thread.start_new_thread(printDateToDisplay, ())
             a = getOneKey()
             displayTime=False
