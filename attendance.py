@@ -1,36 +1,15 @@
-#!/usr/bin/python
-
-#-------------------------------------------------------------------------------
-# Name:        Attendance
-# Purpose:     Read user input and read NFC tag, then insert both into database
-#
-# Author:      Jakub 'Yim' Dvorak
-#
-# Created:     26.10.2013
-# Copyright:   (c) Jakub Dvorak 2013
-# Licence:
-#   ----------------------------------------------------------------------------
-#   "THE BEER-WARE LICENSE" (Revision 42):
-#   Jakub Dvorak wrote this file. As long as you retain this notice you
-#   can do whatever you want with this stuff. If we meet some day, and you think
-#   this stuff is worth it, you can buy me a beer in return.
-#   ----------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-
-import display
-import nfc
-import mysql
-import beeper
-
-import sys
-import tty
-import termios
 import logging
-
-import thread
+import sys
+import termios
 import time
+import tty
 
 import RPi.GPIO as GPIO
+import thread
+
+import display
+import mysql
+import nfc
 
 #Enable debug logging into log
 DEBUG=True

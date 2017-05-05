@@ -1,12 +1,3 @@
-#-------------------------------------------------------------------------------
-# Name:        MFRC522.py
-# Purpose:     Mifare MFRC-522 module 13.56 MHz card/tag reader
-#
-# Author:      Mario Gomez, Jakub Dvorak (aditional changes for this project)
-# More: http://fuenteabierta.teubi.co/2013/07/utilizando-el-lector-nfc-rc522-en-la.html
-# Updated:     26.10.2013
-#-------------------------------------------------------------------------------
-
 import RPi.GPIO as GPIO
 import spi
 import signal

@@ -1,24 +1,10 @@
-#-------------------------------------------------------------------------------
-# Name:        MySQL reader/writer
-# Purpose:
-#
-# Author:      Jakub 'Yim' Dvorak
-#
-# Created:     26.10.2013
-# Copyright:   (c) Jakub Dvorak 2013
-# Licence:
-#   ----------------------------------------------------------------------------
-#   "THE BEER-WARE LICENSE" (Revision 42):
-#   Jakub Dvorak wrote this file. As long as you retain this notice you
-#   can do whatever you want with this stuff. If we meet some day, and you think
-#   this stuff is worth it, you can buy me a beer in return.
-#   ----------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
 import MySQLdb
 
 from time import strftime,localtime
 import datetime
 from unidecode import unidecode
+
+# TODO: change this code for SQLite needs
 
 def connect():
     # Mysql connection setup. Insert your values here
