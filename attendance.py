@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 import thread
 
 import display
-import mysql
+import sqlite
 import nfc
 
 #Enable debug logging into log
@@ -46,7 +46,7 @@ def readNfc(action):
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Incomming - %s",cardId)
-        name = mysql.insertReading(cardId,Actions.incomming)
+        name = sqlite.insertReading(cardId,Actions.incomming)
         display.lcdWriteSecondLine(name)
     if(action==57):#9 - outcomming
         onScreen("...")
@@ -54,7 +54,7 @@ def readNfc(action):
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Outcomming - %s",cardId)
-        name = mysql.insertReading(cardId,Actions.outcomming)
+        name = sqlite.insertReading(cardId,Actions.outcomming)
         display.lcdWriteSecondLine(name)
     if(action==49):#1 - break start
         onScreen("Zacatek pauzy...")
@@ -62,7 +62,7 @@ def readNfc(action):
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Break start - %s",cardId)
-        name = mysql.insertReading(cardId,Actions.breakstart)
+        name = sqlite.insertReading(cardId,Actions.breakstart)
         display.lcdWriteSecondLine(name)
     if(action==51):#3 - break end
         onScreen("Konec pauzy...")
@@ -70,7 +70,7 @@ def readNfc(action):
         display.lcdWriteSecondLine("Swipe your Card")
         cardId=read()
         logging.info("Break end - %s",cardId)
-        name = mysql.insertReading(cardId,Actions.breakend)
+        name = sqlite.insertReading(cardId,Actions.breakend)
         display.lcdWriteSecondLine(name)
     if(action==53):#5 - Deletion of last inserted action
         onScreen("Delete the last entry...")
@@ -78,7 +78,7 @@ def readNfc(action):
         display.lcdWriteSecondLine("")
         cardId=read()
         logging.info("Deleting last action - %s",cardId)
-        (lastTime,lastAction)=mysql.getLastReading(cardId) or (None, None)
+        (lastTime,lastAction)=sqlite.getLastReading(cardId) or (None, None)
 
         if(lastTime == None or lastAction == None):
             display.lcdWriteSecondLine("Unknown Event")
@@ -99,7 +99,7 @@ def readNfc(action):
             if(a==49):#1
                 onScreen("Mazu")
                 logging.info(" - Deleting action %s (cas: %s)",lastAction, lastTime)
-                mysql.deleteLastReading(cardId)
+                sqlite.deleteLastReading(cardId)
                 display.lcdWriteSecondLine("Deleted!")
             else:
                 onScreen("Not Deleted")
