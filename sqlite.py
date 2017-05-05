@@ -1,7 +1,6 @@
 import sqlite3
 from time import strftime,localtime
 import datetime
-from unidecode import unidecode
 
 # TODO: change this code for SQLite needs
 
@@ -22,7 +21,7 @@ def insertReading(tagId,action):
     if(row==None):
         return "Unknown card"
     else:
-        return unidecode(row[1]+", "+row[0])
+        return (row[1]+", "+row[0])
 
 
 def getLastReading(tagId):
