@@ -7,7 +7,7 @@ import tty
 import RPi.GPIO as GPIO
 import thread
 
-import display
+# import display
 import sqlite
 import nfc
 
@@ -47,70 +47,70 @@ def read():
 
 def readNfc(action):
     if (action == 55):  # 7 - Incomming
-        onScreen("Logging In...")
-        display.lcdWriteFirstLine("Prichod...")
-        display.lcdWriteSecondLine("Swipe your Card")
+        # onScreen("Logging In...")
+        # display.lcdWriteFirstLine("Prichod...")
+        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Incomming - %s", cardId)
         name = sqlite.insertReading(cardId, Actions.incomming)
-        display.lcdWriteSecondLine(name)
+        # display.lcdWriteSecondLine(name)
     if (action == 57):  # 9 - outcomming
-        onScreen("...")
-        display.lcdWriteFirstLine("Logging out...")
-        display.lcdWriteSecondLine("Swipe your Card")
+        # onScreen("...")
+        # display.lcdWriteFirstLine("Logging out...")
+        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Outcomming - %s", cardId)
         name = sqlite.insertReading(cardId, Actions.outcomming)
-        display.lcdWriteSecondLine(name)
+        # display.lcdWriteSecondLine(name)
     if (action == 49):  # 1 - break start
-        onScreen("Zacatek pauzy...")
-        display.lcdWriteFirstLine("Pauza zacatek...")
-        display.lcdWriteSecondLine("Swipe your Card")
+        # onScreen("Zacatek pauzy...")
+        # display.lcdWriteFirstLine("Pauza zacatek...")
+        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Break start - %s", cardId)
         name = sqlite.insertReading(cardId, Actions.breakstart)
-        display.lcdWriteSecondLine(name)
+        # display.lcdWriteSecondLine(name)
     if (action == 51):  # 3 - break end
-        onScreen("Konec pauzy...")
-        display.lcdWriteFirstLine("Pauza konec...")
-        display.lcdWriteSecondLine("Swipe your Card")
+        # onScreen("Konec pauzy...")
+        # display.lcdWriteFirstLine("Pauza konec...")
+        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Break end - %s", cardId)
         name = sqlite.insertReading(cardId, Actions.breakend)
-        display.lcdWriteSecondLine(name)
+        # display.lcdWriteSecondLine(name)
     if (action == 53):  # 5 - Deletion of last inserted action
-        onScreen("Delete the last entry...")
-        display.lcdWriteFirstLine("Deleting...")
-        display.lcdWriteSecondLine("")
+        # onScreen("Delete the last entry...")
+        # display.lcdWriteFirstLine("Deleting...")
+        # display.lcdWriteSecondLine("")
         cardId = read()
         logging.info("Deleting last action - %s", cardId)
         (lastTime, lastAction) = sqlite.getLastReading(cardId) or (None, None)
 
         if (lastTime == None or lastAction == None):
-            display.lcdWriteSecondLine("Unknown Event")
+            # display.lcdWriteSecondLine("Unknown Event")
             logging.info("Action not found")
             time.sleep(1)
 
-        else:
-            display.lcdWriteFirstLine("Delete Event?")
-            if (lastAction == Actions.incomming):
-                display.lcdWriteSecondLine("Check In")
-            elif (lastAction == Actions.outcomming):
-                display.lcdWriteSecondLine("Check Out")
-            elif (lastAction == Actions.breakstart):
-                display.lcdWriteSecondLine("Pauza zacatek")
-            elif (lastAction == Actions.breakend):
-                display.lcdWriteSecondLine("End of Pause?")
-            a = getOneKey()
-            if (a == 49):  # 1
-                onScreen("Mazu")
-                logging.info(" - Deleting action %s (cas: %s)", lastAction, lastTime)
-                sqlite.deleteLastReading(cardId)
-                display.lcdWriteSecondLine("Deleted!")
-            else:
-                onScreen("Not Deleted")
-                logging.info(" - Deleting canceled")
-                display.lcdWriteSecondLine("Not deleted!")
+        # else:
+        #     display.lcdWriteFirstLine("Delete Event?")
+        #     if (lastAction == Actions.incomming):
+        #         display.lcdWriteSecondLine("Check In")
+        #     elif (lastAction == Actions.outcomming):
+        #         display.lcdWriteSecondLine("Check Out")
+        #     elif (lastAction == Actions.breakstart):
+        #         display.lcdWriteSecondLine("Pauza zacatek")
+        #     elif (lastAction == Actions.breakend):
+        #         display.lcdWriteSecondLine("End of Pause?")
+        #     a = getOneKey()
+        #     if (a == 49):  # 1
+        #         onScreen("Mazu")
+        #         logging.info(" - Deleting action %s (cas: %s)", lastAction, lastTime)
+        #         sqlite.deleteLastReading(cardId)
+        #         # display.lcdWriteSecondLine("Deleted!")
+        #     else:
+        #         onScreen("Not Deleted")
+        #         logging.info(" - Deleting canceled")
+                # display.lcdWriteSecondLine("Not deleted!")
 
     # Sleep a little, so the information about last action on display is readable by humans
     time.sleep(1)
@@ -158,8 +158,8 @@ def printDateToDisplay():
         # Display current time on display, until global variable is set
         if displayTime != True:
             thread.exit()
-        display.lcdWriteFirstLine(time.strftime("%d.%m. %H:%M:%S", time.localtime()))
-        onScreen(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()))
+        # display.lcdWriteFirstLine(time.strftime("%d.%m. %H:%M:%S", time.localtime()))
+        # onScreen(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()))
         time.sleep(1)
 
 

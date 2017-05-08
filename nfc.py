@@ -1,5 +1,5 @@
 import MFRC522
-from attendance import onScreen
+# from attendance import onScreen
 
 def readNfc():
     reading = True
