@@ -4,7 +4,7 @@ import termios
 import time
 import tty
 
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import thread
 
 # import display
@@ -38,10 +38,7 @@ def onScreen(message):
 
 
 def read():
-    ledRedOn()
     cardId = nfc.readNfc()
-    beep()
-    ledRedOff()
     return cardId
 
 
@@ -116,25 +113,6 @@ def readNfc(action):
     time.sleep(1)
 
 
-def ledRedOn():
-    GPIO.output(8, True)
-
-
-def ledRedOff():
-    GPIO.output(8, False)
-
-
-def beep():
-    # starting beeping in separate thread to not slow down whole application
-    thr = thread.start_new_thread(beepAsync, ())
-
-
-def beepAsync():
-    GPIO.output(13, True)
-    time.sleep(0.1)
-    GPIO.output(13, False)
-
-
 # Backing up the input attributes, so we can change it for reading single
 # character without hitting enter  each time
 fd = sys.stdin.fileno()
@@ -161,13 +139,6 @@ def printDateToDisplay():
         # display.lcdWriteFirstLine(time.strftime("%d.%m. %H:%M:%S", time.localtime()))
         # onScreen(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()))
         time.sleep(1)
-
-
-def initGpio():
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(8, GPIO.OUT)
-    GPIO.setup(13, GPIO.OUT)
-
 
 # def main():
 #     GPIO.cleanup()
