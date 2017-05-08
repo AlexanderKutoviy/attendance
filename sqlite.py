@@ -12,18 +12,21 @@ def insertReading(tagId,action):
     conn = connect()
     cur = conn.cursor()
     currentTime=strftime("%Y%m%d%H%M%S", localtime())
+    print(tagId)
+    print(currentTime)
     # cur.execute("INSERT INTO readings (tagId, time, action) VALUES ('%s', '%s','%s')",(tagId,currentTime,action))
     cur.execute("INSERT INTO readings (tagId, time, action) VALUES (?, ?, ?)",(tagId,currentTime,action))
+    print("INSERTED")
     # cur.commit()
     # cur.execute("SELECT name,surname FROM users WHERE id = (SELECT userId FROM cards WHERE tagId='%s' LIMIT 1)",(tagId))
-    cur.execute("SELECT name,surname FROM users WHERE id = (SELECT userId FROM cards WHERE tagId=? LIMIT 1)",(tagId))
-    row = cur.fetchone();
+    # cur.execute("SELECT name,surname FROM users WHERE id = (SELECT userId FROM cards WHERE tagId=? LIMIT 1)",(tagId))
+    # row = cur.fetchone();
     cur.close()
     conn.close()
-    if(row==None):
-        return "Unknown card"
-    else:
-        return (row[1]+", "+row[0])
+    # if(row==None):
+    #     return "Unknown card"
+    # else:
+    #     return (row[1]+", "+row[0])
 
 
 def getLastReading(tagId):
