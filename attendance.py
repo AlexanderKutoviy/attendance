@@ -3,19 +3,13 @@ import sys
 import termios
 import time
 import tty
-
-# import RPi.GPIO as GPIO
 import thread
-
-# import display
 import sqlite
 import nfc
-
 # Enable debug logging into log
 DEBUG = True
 # Enable printing informations to std. output
 VERBOSE = True
-
 
 class Actions:
     incomming = 1
@@ -27,97 +21,50 @@ class Actions:
 if (DEBUG):
     logging.basicConfig(format='%(asctime)s %(message)s', filename='attendance.log', level=logging.DEBUG)
 
-
 def debug(message):
     logging.debug(message)
-
 
 def onScreen(message):
     if (VERBOSE):
         print(message)
 
-
 def read():
     cardId = nfc.readNfc()
     return cardId
 
-
 def readNfc(action):
     if (action == 55):  # 7 - Incomming
-        # onScreen("Logging In...")
-        # display.lcdWriteFirstLine("Prichod...")
-        # display.lcdWriteSecondLine("Swipe your Card")
+        # read the card id and insert data in the SQLite DB
+        # other cases are optional
         cardId = read()
         logging.info("Incomming - %s", cardId)
-        name = sqlite.insertReading(cardId, Actions.incomming)
-        # display.lcdWriteSecondLine(name)
+        sqlite.insertReading(cardId, Actions.incomming)
     if (action == 57):  # 9 - outcomming
-        # onScreen("...")
-        # display.lcdWriteFirstLine("Logging out...")
-        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Outcomming - %s", cardId)
-        name = sqlite.insertReading(cardId, Actions.outcomming)
-        # display.lcdWriteSecondLine(name)
+        sqlite.insertReading(cardId, Actions.outcomming)
     if (action == 49):  # 1 - break start
-        # onScreen("Zacatek pauzy...")
-        # display.lcdWriteFirstLine("Pauza zacatek...")
-        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Break start - %s", cardId)
-        name = sqlite.insertReading(cardId, Actions.breakstart)
-        # display.lcdWriteSecondLine(name)
+        sqlite.insertReading(cardId, Actions.breakstart)
     if (action == 51):  # 3 - break end
-        # onScreen("Konec pauzy...")
-        # display.lcdWriteFirstLine("Pauza konec...")
-        # display.lcdWriteSecondLine("Swipe your Card")
         cardId = read()
         logging.info("Break end - %s", cardId)
-        name = sqlite.insertReading(cardId, Actions.breakend)
-        # display.lcdWriteSecondLine(name)
+        sqlite.insertReading(cardId, Actions.breakend)
     if (action == 53):  # 5 - Deletion of last inserted action
-        # onScreen("Delete the last entry...")
-        # display.lcdWriteFirstLine("Deleting...")
-        # display.lcdWriteSecondLine("")
         cardId = read()
         logging.info("Deleting last action - %s", cardId)
         (lastTime, lastAction) = sqlite.getLastReading(cardId) or (None, None)
-
         if (lastTime == None or lastAction == None):
-            # display.lcdWriteSecondLine("Unknown Event")
             logging.info("Action not found")
             time.sleep(1)
-
-        # else:
-        #     display.lcdWriteFirstLine("Delete Event?")
-        #     if (lastAction == Actions.incomming):
-        #         display.lcdWriteSecondLine("Check In")
-        #     elif (lastAction == Actions.outcomming):
-        #         display.lcdWriteSecondLine("Check Out")
-        #     elif (lastAction == Actions.breakstart):
-        #         display.lcdWriteSecondLine("Pauza zacatek")
-        #     elif (lastAction == Actions.breakend):
-        #         display.lcdWriteSecondLine("End of Pause?")
-        #     a = getOneKey()
-        #     if (a == 49):  # 1
-        #         onScreen("Mazu")
-        #         logging.info(" - Deleting action %s (cas: %s)", lastAction, lastTime)
-        #         sqlite.deleteLastReading(cardId)
-        #         # display.lcdWriteSecondLine("Deleted!")
-        #     else:
-        #         onScreen("Not Deleted")
-        #         logging.info(" - Deleting canceled")
-                # display.lcdWriteSecondLine("Not deleted!")
-
     # Sleep a little, so the information about last action on display is readable by humans
     time.sleep(1)
-
 
 # Backing up the input attributes, so we can change it for reading single
 # character without hitting enter  each time
 fd = sys.stdin.fileno()
 old_settings = termios.tcgetattr(fd)
-
 
 def getOneKey():
     try:
@@ -126,7 +73,6 @@ def getOneKey():
         return ord(ch)
     finally:
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-
 
 displayTime = True
 
@@ -140,30 +86,9 @@ def printDateToDisplay():
         # onScreen(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()))
         time.sleep(1)
 
-# def main():
-#     GPIO.cleanup()
-#     try:
-#         initGpio()
-#         # display.init()
-#         while True:
-#             # display.lcdWriteSecondLine("Choose an action...")
-#             global displayTime
-#             displayTime=true
-#             #Start new thread to show curent datetime on display
-#             # and wait for user input on keyboard
-#             # thr = thread.start_new_thread(printDateToDisplay, ())
-#             a = getOneKey()
-#             # displayTime=False
-#             if 47 < a < 58:
-#                 readNfc(a)
-#     except KeyboardInterrupt:
-#         GPIO.cleanup()
-#         pass
-#     GPIO.cleanup()
-
 def main():
+    # 55 is a keyboard input for reading task
     readNfc(55)
-
 
 if __name__ == '__main__':
     debug("----------========== Starting session! ==========----------")
